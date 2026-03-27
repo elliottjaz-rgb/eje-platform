@@ -3,21 +3,925 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EJE - Legal</title>
+    <title>EJE - Content Management for Creators and Businesses</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 700px; margin: 0 auto; padding: 2rem 1rem; color: #333; line-height: 1.6; }
-        h1 { font-size: 1.8rem; }
-        a { color: #2563eb; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        ul { padding-left: 1.5rem; }
-        li { margin-bottom: 0.5rem; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1f2937;
+            line-height: 1.6;
+            background: #fff;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Header / Navigation */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1f2937;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #4b5563;
+            font-size: 0.925rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: #1f2937;
+            margin: 5px 0;
+            transition: transform 0.2s;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 50%, #f5f3ff 100%);
+            padding: 5rem 1.5rem 4rem;
+            text-align: center;
+        }
+
+        .hero-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .hero-text {
+            max-width: 640px;
+            margin: 0 auto 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            line-height: 1.15;
+            color: #1f2937;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #4b5563;
+            max-width: 560px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: #2563eb;
+            color: #fff;
+            padding: 0.85rem 2rem;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline-hero {
+            display: inline-block;
+            background: transparent;
+            color: #2563eb;
+            padding: 0.85rem 2rem;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: 2px solid #2563eb;
+            margin-left: 0.75rem;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-outline-hero:hover {
+            background: #eff6ff;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        /* Dashboard mockup */
+        .dashboard-mockup {
+            max-width: 720px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .mockup-toolbar {
+            background: #f3f4f6;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d1d5db;
+        }
+
+        .mockup-dot:nth-child(1) { background: #ef4444; }
+        .mockup-dot:nth-child(2) { background: #f59e0b; }
+        .mockup-dot:nth-child(3) { background: #22c55e; }
+
+        .mockup-url {
+            flex: 1;
+            background: #fff;
+            border-radius: 6px;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-left: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .mockup-body {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1.5rem;
+        }
+
+        .mockup-preview {
+            background: #1f2937;
+            border-radius: 8px;
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+
+        .mockup-preview svg {
+            opacity: 0.4;
+        }
+
+        .mockup-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .mockup-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .mockup-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #374151;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .mockup-input {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 0.5rem 0.65rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .mockup-textarea {
+            height: 56px;
+            resize: none;
+        }
+
+        .mockup-select {
+            appearance: none;
+            background: #f9fafb url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 0.65rem center;
+            padding-right: 2rem;
+        }
+
+        .mockup-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .mockup-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .mockup-checkbox-box {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 3px;
+            background: #fff;
+        }
+
+        .mockup-btn {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 0.55rem 1.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: default;
+            align-self: flex-start;
+            margin-top: 0.25rem;
+        }
+
+        /* Section shared styles */
+        .section {
+            padding: 5rem 1.5rem;
+        }
+
+        .section-alt {
+            background: #f9fafb;
+        }
+
+        .section-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-heading h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-heading p {
+            font-size: 1.1rem;
+            color: #6b7280;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* Features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: box-shadow 0.25s, transform 0.2s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            font-size: 1.35rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            transition: box-shadow 0.25s, transform 0.2s;
+        }
+
+        .pricing-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .pricing-card.featured {
+            border-color: #2563eb;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.12);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2563eb;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.25rem 0.85rem;
+            border-radius: 20px;
+        }
+
+        .pricing-tier {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .pricing-desc {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 1.75rem;
+        }
+
+        .pricing-features li {
+            font-size: 0.9rem;
+            color: #4b5563;
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .pricing-features li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.65rem;
+            width: 16px;
+            height: 16px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") no-repeat center;
+        }
+
+        .btn-pricing {
+            display: inline-block;
+            padding: 0.65rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.15s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-pricing-primary {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-pricing-primary:hover {
+            background: #1d4ed8;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .btn-pricing-outline {
+            background: transparent;
+            color: #2563eb;
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-pricing-outline:hover {
+            border-color: #2563eb;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        /* How It Works */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            counter-reset: step;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: #2563eb;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 auto 1.25rem;
+        }
+
+        .step h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+            color: #6b7280;
+            line-height: 1.6;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: #d1d5db;
+            padding: 3.5rem 1.5rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .footer-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-col h4 {
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            color: #9ca3af;
+            font-size: 0.925rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .footer-legal-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-legal-links a {
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+
+        .footer-legal-links a:hover {
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 1rem 1.5rem 1.5rem;
+                border-bottom: 1px solid #e5e7eb;
+                gap: 1rem;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .hero {
+                padding: 3rem 1.5rem 2.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.05rem;
+            }
+
+            .hero-text {
+                margin-bottom: 2rem;
+            }
+
+            .btn-outline-hero {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .mockup-body {
+                grid-template-columns: 1fr;
+            }
+
+            .mockup-preview {
+                height: 160px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 360px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .footer-columns {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>EJE</h1>
-    <ul>
-        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-        <li><a href="terms-of-service.html">Terms of Service</a></li>
-    </ul>
+
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">EJE</div>
+            <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="app/publish.html">Publish Content</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-of-service.html">Terms of Service</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <h1>Content management for creators and businesses</h1>
+                <p>Prepare, review, and publish video content to TikTok and other platforms. EJE gives creators the tools to publish with confidence.</p>
+                <a href="app/publish.html" class="btn-primary">Get Started Free</a>
+                <a href="#pricing" class="btn-outline-hero">View Pricing</a>
+            </div>
+
+            <!-- Dashboard Mockup -->
+            <div class="dashboard-mockup">
+                <div class="mockup-toolbar">
+                    <div class="mockup-dot"></div>
+                    <div class="mockup-dot"></div>
+                    <div class="mockup-dot"></div>
+                    <div class="mockup-url">eje-platform.com/app/publish</div>
+                </div>
+                <div class="mockup-body">
+                    <div class="mockup-preview">
+                        <svg width="40" height="40" fill="none" stroke="#6b7280" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </div>
+                    <div class="mockup-form">
+                        <div class="mockup-field">
+                            <div class="mockup-label">Caption</div>
+                            <div class="mockup-input mockup-textarea">Check out this new recipe I tried! #cooking #foodie #homemade</div>
+                        </div>
+                        <div class="mockup-field">
+                            <div class="mockup-label">Privacy Level</div>
+                            <div class="mockup-input mockup-select">Public</div>
+                        </div>
+                        <div class="mockup-field">
+                            <div class="mockup-label">Interactions</div>
+                            <div class="mockup-row">
+                                <div class="mockup-checkbox"><div class="mockup-checkbox-box"></div> Comments</div>
+                                <div class="mockup-checkbox"><div class="mockup-checkbox-box"></div> Duet</div>
+                                <div class="mockup-checkbox"><div class="mockup-checkbox-box"></div> Stitch</div>
+                            </div>
+                        </div>
+                        <div class="mockup-btn">Post to TikTok</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+        <div class="section-inner">
+            <div class="section-heading">
+                <h2>Everything creators need to publish content</h2>
+                <p>Powerful features designed for creators and businesses who publish across multiple platforms.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    </div>
+                    <h3>Multi-Platform Publishing</h3>
+                    <p>Publish to TikTok, Instagram, YouTube, and more from one dashboard. Each creator connects their own accounts via OAuth.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    </div>
+                    <h3>Content Review</h3>
+                    <p>Review every piece of content before it goes live. Maintain quality standards across all your published content.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h3>Creator Controls</h3>
+                    <p>Full control over privacy settings, interaction preferences, and content disclosure. Creators decide how their content is shared.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </div>
+                    <h3>Performance Insights</h3>
+                    <p>Track how your content performs across all connected platforms. Make informed decisions about your publishing strategy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="section section-alt">
+        <div class="section-inner">
+            <div class="section-heading">
+                <h2>Simple, transparent pricing</h2>
+                <p>Choose the plan that fits your publishing needs. Start free, upgrade as you grow.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-tier">Starter</div>
+                    <div class="pricing-price">Free</div>
+                    <div class="pricing-desc">For individual creators getting started</div>
+                    <ul class="pricing-features">
+                        <li>1 connected account</li>
+                        <li>10 posts per month</li>
+                        <li>Basic analytics</li>
+                        <li>Content review tools</li>
+                    </ul>
+                    <a href="app/publish.html" class="btn-pricing btn-pricing-outline">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-tier">Pro</div>
+                    <div class="pricing-price">$19<span>/mo</span></div>
+                    <div class="pricing-desc">For creators who publish regularly</div>
+                    <ul class="pricing-features">
+                        <li>5 connected accounts</li>
+                        <li>Unlimited posts</li>
+                        <li>Priority support</li>
+                        <li>Advanced analytics</li>
+                    </ul>
+                    <a href="app/publish.html" class="btn-pricing btn-pricing-primary">Get Started</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-tier">Business</div>
+                    <div class="pricing-price">$49<span>/mo</span></div>
+                    <div class="pricing-desc">For businesses and agencies</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited accounts</li>
+                        <li>Collaboration features</li>
+                        <li>Advanced analytics</li>
+                        <li>API access</li>
+                    </ul>
+                    <a href="app/publish.html" class="btn-pricing btn-pricing-outline">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="section">
+        <div class="section-inner">
+            <div class="section-heading">
+                <h2>How It Works</h2>
+                <p>Three steps from connection to publication.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Connect</h3>
+                    <p>Connect your TikTok account securely via OAuth. Your credentials stay with TikTok — EJE never sees your password.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Create</h3>
+                    <p>Prepare your video content with captions, hashtags, and metadata. Review everything before it goes live.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Publish</h3>
+                    <p>Set your privacy level, configure interactions, and publish with confidence. Track your post status in real time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="app/publish.html">Publish Content</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:contact@eje-platform.com">contact@eje-platform.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 EJE. All rights reserved.</p>
+                <div class="footer-legal-links">
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    <a href="terms-of-service.html">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>

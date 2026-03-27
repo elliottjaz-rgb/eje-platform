@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publish Content - EJE</title>
+  <link rel="stylesheet" href="publish.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="../" class="brand">EJE</a>
+      <nav>Publish Content</nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section 1: TikTok Login -->
+    <section id="login-section" class="card">
+      <h2>Connect Your TikTok Account</h2>
+      <p class="section-desc">Link your TikTok account to publish content directly from your EJE dashboard.</p>
+      <button id="connect-btn" class="btn btn-primary btn-lg">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M16.5 1H3.5C2.12 1 1 2.12 1 3.5V16.5C1 17.88 2.12 19 3.5 19H16.5C17.88 19 19 17.88 19 16.5V3.5C19 2.12 17.88 1 16.5 1Z" fill="currentColor" opacity="0.1"/>
+          <path d="M13.5 8.5C13.5 8.5 14.5 9 15.5 9V7C15.5 7 14.2 6.8 13.5 5.5V11.5C13.5 13.43 11.93 15 10 15C8.07 15 6.5 13.43 6.5 11.5C6.5 9.57 8.07 8 10 8V10C9.17 10 8.5 10.67 8.5 11.5C8.5 12.33 9.17 13 10 13C10.83 13 11.5 12.33 11.5 11.5V5H13.5V8.5Z" fill="currentColor"/>
+        </svg>
+        Connect TikTok Account
+      </button>
+      <div id="connected-state" class="connected-state hidden">
+        <img id="connected-avatar" class="avatar" src="" alt="Profile avatar" width="48" height="48">
+        <div class="connected-info">
+          <span class="connected-label">Connected as</span>
+          <span id="connected-nickname" class="connected-name"></span>
+        </div>
+        <button id="disconnect-btn" class="btn btn-outline btn-sm">Disconnect</button>
+      </div>
+    </section>
+
+    <!-- Section 2: Creator Info Panel -->
+    <section id="creator-info" class="card hidden">
+      <h3>Account Details</h3>
+      <div class="creator-details">
+        <div class="creator-profile">
+          <img id="creator-avatar" class="avatar avatar-lg" src="" alt="Creator avatar" width="64" height="64">
+          <span id="creator-nickname" class="creator-name"></span>
+        </div>
+        <div class="creator-capabilities">
+          <h4>Account Capabilities</h4>
+          <ul id="capabilities-list" class="capabilities-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Content Queue -->
+    <section id="content-queue" class="card hidden">
+      <div class="section-header">
+        <h3>Content Queue</h3>
+        <button id="refresh-queue-btn" class="btn btn-outline btn-sm">Refresh</button>
+      </div>
+      <p class="section-desc">Select content you've prepared to publish to TikTok.</p>
+      <div id="queue-loading" class="loading hidden">
+        <div class="spinner"></div>
+        <span>Loading content queue...</span>
+      </div>
+      <div id="queue-empty" class="empty-state hidden">
+        <p>No content available in the queue. Check back later or add content through the EJE content management platform.</p>
+      </div>
+      <div id="queue-grid" class="queue-grid"></div>
+    </section>
+
+    <!-- Section 4: Post Form -->
+    <section id="post-form" class="card hidden">
+      <h3>Publish to TikTok</h3>
+
+      <!-- 4.1 Video Preview -->
+      <div class="form-group">
+        <label>Video Preview</label>
+        <div class="video-container">
+          <video id="video-preview" controls playsinline>
+            <source id="video-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="caption-input">Caption</label>
+        <textarea id="caption-input" rows="4" maxlength="2200" placeholder="Write a caption..."></textarea>
+        <div class="char-counter">
+          <span id="char-count">0</span> / 2200
+        </div>
+      </div>
+
+      <!-- 4.2 Privacy Level -->
+      <div class="form-group">
+        <label for="privacy-level">Privacy Level <span class="required">*</span></label>
+        <select id="privacy-level" required>
+          <option value="" disabled selected>Select privacy level...</option>
+        </select>
+        <span class="form-hint">Choose who can view this video.</span>
+      </div>
+
+      <!-- 4.3 Interaction Checkboxes -->
+      <div class="form-group">
+        <label>Interactions</label>
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="allow-comment">
+            <span>Allow Comments</span>
+          </label>
+          <label class="checkbox-label" id="duet-label">
+            <input type="checkbox" id="allow-duet">
+            <span>Allow Duet</span>
+          </label>
+          <label class="checkbox-label" id="stitch-label">
+            <input type="checkbox" id="allow-stitch">
+            <span>Allow Stitch</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 4.4 Content Disclosure -->
+      <div class="form-group">
+        <label>Content Disclosure</label>
+        <label class="toggle-label">
+          <input type="checkbox" id="disclosure-toggle">
+          <span class="toggle-switch"></span>
+          <span class="toggle-text">Disclose content</span>
+        </label>
+        <div id="disclosure-options" class="disclosure-options hidden">
+          <label class="checkbox-label">
+            <input type="checkbox" id="brand-organic">
+            <span>Your brand</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="brand-content">
+            <span>Branded content</span>
+          </label>
+        </div>
+        <div id="disclosure-message" class="disclosure-message hidden"></div>
+        <div id="disclosure-label" class="disclosure-label hidden"></div>
+      </div>
+
+      <!-- 4.6 AI-generated content -->
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="aigc-toggle">
+          <span>This content contains AI-generated material</span>
+        </label>
+      </div>
+
+      <!-- 4.7 Consent Declaration -->
+      <div class="form-group">
+        <div id="consent-declaration" class="consent-declaration"></div>
+      </div>
+
+      <!-- 4.8 Publish Button -->
+      <div class="form-actions">
+        <button id="publish-btn" class="btn btn-primary btn-lg" disabled>Post to TikTok</button>
+      </div>
+    </section>
+
+    <!-- Section 5: Publish Status -->
+    <section id="publish-status" class="card hidden">
+      <h3>Publishing Status</h3>
+      <div id="status-content" class="status-content">
+        <div class="spinner"></div>
+        <p id="status-message"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="../privacy-policy.html">Privacy Policy</a>
+        <a href="../terms-of-service.html">Terms of Service</a>
+      </div>
+      <p>&copy; 2026 EJE</p>
+    </div>
+  </footer>
+
+  <script src="publish.js"></script>
+</body>
+</html>
