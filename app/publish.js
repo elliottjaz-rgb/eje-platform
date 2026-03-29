@@ -16,7 +16,7 @@ const App = (() => {
   let pollTimer = null;
 
   const API_BASE = 'https://eirwintest.thefuturen8n.com';
-  const CLIENT_KEY = 'YOUR_TIKTOK_CLIENT_KEY';
+  const CLIENT_KEY = 'sbawji402f8hylq804';
   const REDIRECT_URI =
     'https://elliottjaz-rgb.github.io/eje-platform/app/publish.html';
 
